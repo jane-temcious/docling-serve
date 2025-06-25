@@ -3,6 +3,7 @@ import logging
 import shutil
 import time
 from typing import TYPE_CHECKING, Any, Optional, Union
+import torch
 
 from fastapi.responses import FileResponse
 
@@ -122,3 +123,4 @@ class AsyncLocalWorker:
                 await self.orchestrator.notify_task_subscribers(task_id)
                 self.orchestrator.task_queue.task_done()
                 _log.debug(f"Worker {self.worker_id} completely done with {task_id}")
+                torch.cuda.empty_cache()
